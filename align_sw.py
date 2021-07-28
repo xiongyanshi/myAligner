@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 """
-A Smith-Waterman alignment program.
+Smith-Waterman pair-wise alignment.
 by Yanshi Xiong.
 """
 
@@ -173,33 +173,11 @@ class Align:
 
 
 def main():
-    descriptionStr = 'Smith-Waterman pairwise alignment(toy) by Yanshi Xiong'
-    parser = argparse.ArgumentParser(description=descriptionStr)
-    parser.add_argument('-i','--input', required=False,
-                        default='./demo/input1.fa',
-                        help='file name of input fasta, parse first 2 records')
-    parser.add_argument('-o','--output', required=False,
-                        default=None,
-                        help='file name of alignment result (fasta)')
-    parser.add_argument('-r', '--reads', required=False,
-                        default=None,
-                        help='two reads seperated by "," (skip open file)')
-    parser.add_argument('-a', '--algo', required=False,
-                        choices=['sw','nw'], default='sw',
-                        help='''Smith-Waterman (local, default) or
-                                Needleman-Wunsch (global) algorithm''')
-    parser.add_argument('-m','--submat', required=False,
-                        default='./lib/dna_sub.default.mat',
-                        help='file name of base substitution matrix')
-    parser.add_argument('-g', '--gap', required=False,
-                        default='./lib/dna_gap.default.txt',
-                        help='gap penalty plan')
-
-    args = vars(parser.parse_args())
+    # pair-wise alignment with smith-waterman algorithm.
 
     # substitution matrix and gap penalty are must.
-    submat     = readmat(args['submat'])
-    gap_open   = readgap(args['gap'])['gap_open']
+    submat     = readmat('./lib/dna_sub.default.mat')
+    gap_open   = readgap('./lib/dna_gap.default.txt')['gap_open']
     gap_extend = readgap(args['gap'])['gap_extend']
     algo       = args['algo']
 
