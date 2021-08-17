@@ -5,10 +5,19 @@ myAligner
 ## Getting start
 ```
 # pairwise alignment with needleman-wunch algorithm:
-python align_nw.py actt attc
+$ python align_nw.py actt attc
+
+  ACTT-
+  | ||   
+  A-TTC
 
 # pairwise alignment with smith-waterman aligorithm:
-python align_sw.py actt attc
+$ python align_sw.py actt attc
+
+  ACTT-
+    || 
+  -ATTC
+
 
 ```
 ## Advanced usage
@@ -43,5 +52,6 @@ open=-5
 extend=-2
 ```
 In this way, "-" match to "A" means -5 + -2*1 =-7, "---" match to "ACG" means -5 + -2*3 = -11.
+
 
 
