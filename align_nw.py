@@ -100,7 +100,8 @@ def pretty_print_align(seq1, seq2, path_code):
             middle = middle + ' '
             seq1 = seq1[1:]
 
-    print('Alignment:\n\n   ' + align1 + '\n   ' + middle + '\n   ' + align2 + '\n')
+    #print('\n  ' + align1 + '\n  ' + middle + '\n  ' + align2 + '\n')
+    print('\n  %s\n  %s  \n  %s\n' % (align1, middle, align2))
     return
 
 def usage():
@@ -115,16 +116,14 @@ def main():
         usage()
         print('--------Demo:-------\n')
 
-    print('1: %s' % seq1)
-    print('2: %s' % seq2)
-
     score_mat, trace_mat = make_score_matrix(seq1, seq2)
     #print_m(seq1, seq2, score_mat)
     #print_m(seq1, seq2, trace_mat)
 
     path_code = traceback(seq1, seq2, trace_mat)
     pretty_print_align(seq1, seq2, path_code)
-    #print('   '+path_code)
+    #print(path_code)
 
 if __name__ == '__main__':
     main()
+

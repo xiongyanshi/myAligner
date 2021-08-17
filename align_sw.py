@@ -5,6 +5,7 @@ Smith-Waterman pair-wise alignment.
 by Yanshi Xiong.
 """
 
+import sys
 import argparse
 import numpy as np
 from lib.seqio import Fasta
@@ -154,7 +155,7 @@ class Align:
 
         top = top.replace(' ', '-')       # for un-aligned part
         bottom = bottom.replace(' ', '-')
-        res = "\n%s\n%s\n%s\n" % (top, middle, bottom)
+        res = "\n  %s\n  %s\n  %s\n" % (top, middle, bottom)
         self.alignedseq1 = top
         self.alignedseq2 = bottom
         self.printable = res
@@ -178,32 +179,17 @@ def main():
     # substitution matrix and gap penalty are must.
     submat     = readmat('./lib/dna_sub.default.mat')
     gap_open   = readgap('./lib/dna_gap.default.txt')['gap_open']
-    gap_extend = readgap(args['gap'])['gap_extend']
-    algo       = args['algo']
+    gap_extend = readgap('./lib/dna_gap.default.txt')['gap_extend']
+    algo = 'sw'
 
-    # get input
-    if args['reads']:
-        seq1, seq2 = args['reads'].split(',')
-    else:
-        infasta = Fasta(args['input'])
-        seq1, seq2 = infasta.seq1, infasta.seq2
+    seq1 = sys.argv[1]
+    seq2 = sys.argv[2]
 
     # ready to go
     align = Align(seq1, seq2, submat, gap_open, gap_extend, algo)
     align.print_align()
     #align.print_scoremat()
     #align.print_tracemat()
-
-    # if writing to file
-    if args['output']:
-        outfile = args['output']
-        outfasta = Fasta()
-        outfasta.from_string('>%s\n%s\n>%s\n%s\n' % (
-                               infasta.name1 + '_aligned',
-                               align.alignedseq1,
-                               infasta.name2 + '_aligned',
-                               align.alignedseq2))
-        outfasta.to_file(outfile)
 
     return 0
 
