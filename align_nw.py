@@ -9,9 +9,9 @@ def theta(a, b):
 def make_score_matrix(seq1, seq2):
     """
     return score matrix and map(each score from which direction)
-    0: diagnosis
-    1: up
-    2: left
+    0: from diagonal
+    1: from left
+    2: from up
     """
     seq1 = '-' + seq1
     seq2 = '-' + seq2
@@ -19,7 +19,7 @@ def make_score_matrix(seq1, seq2):
     trace_mat = {}
 
     for i,p in enumerate(seq1):
-        score_mat[i] = {}
+        score_mat[i] = {}      # matrix with two layer dict
         trace_mat[i] = {}
         for j,q in enumerate(seq2):
             if i == 0:                    # first row, gap in seq1
@@ -34,8 +34,8 @@ def make_score_matrix(seq1, seq2):
             l  = score_mat[i][j-1]   + theta('-', q)   # from left, mark 1, gap in seq1
             u  = score_mat[i-1][j]   + theta(p, '-')   # from up, mark 2, gap in seq2
             picked = max([ul,l,u])
-            score_mat[i][j] = picked
-            trace_mat[i][j] = [ul, l, u].index(picked)   # record which direction
+            score_mat[i][j] = picked                     # record value
+            trace_mat[i][j] = [ul, l, u].index(picked)   # record direction
     return score_mat, trace_mat
 
 def traceback(seq1, seq2, trace_mat):
@@ -48,7 +48,7 @@ def traceback(seq1, seq2, trace_mat):
     path_code = ''
     while i > 0 or j > 0:
         direction = trace_mat[i][j]
-        if direction == 0:                    # from up-left direction
+        if direction == 0:                    # from diagonal
             i = i-1
             j = j-1
             path_code = '0' + path_code
@@ -100,29 +100,21 @@ def pretty_print_align(seq1, seq2, path_code):
             middle = middle + ' '
             seq1 = seq1[1:]
 
-    #print('\n  ' + align1 + '\n  ' + middle + '\n  ' + align2 + '\n')
-    print('\n  %s\n  %s  \n  %s\n' % (align1, middle, align2))
-    return
-
-def usage():
-    print('Usage:\n\tpython nwAligner.py seq1 seq2\n')
+    print('  %s\n  %s  \n  %s' % (align1, middle, align2))
     return
 
 def main():
     try:
-        seq1, seq2 = map(str.upper, sys.argv[1:3])
+        seq1, seq2 = sys.argv[1:3]
     except:
+        print('Usage: python align_nw.py seq1 seq2')
+        print('--Demo:--')
         seq1, seq2 = 'TCATC','TCATGGC'
-        usage()
-        print('--------Demo:-------\n')
 
     score_mat, trace_mat = make_score_matrix(seq1, seq2)
-    #print_m(seq1, seq2, score_mat)
-    #print_m(seq1, seq2, trace_mat)
 
     path_code = traceback(seq1, seq2, trace_mat)
     pretty_print_align(seq1, seq2, path_code)
-    #print(path_code)
 
 if __name__ == '__main__':
     main()

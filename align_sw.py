@@ -110,7 +110,7 @@ class Align:
             elif direction == '2':
                 i -= 1
         self.start = [i,j]
-        # the end of tracing back journey,
+        # the end of tracing back,
         # start of alignment segment.
 
     def __makeprintable(self):
