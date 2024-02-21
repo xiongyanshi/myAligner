@@ -1,5 +1,6 @@
 # my_align
-minimal alignment algorithm implementation.
+minimal alignment algorithm implementation.  
+用最简单的代码实现一些序列比对算法
 
 ### my_nw.py
 
